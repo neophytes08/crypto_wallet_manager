@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@core/decorator": "<rootDir>/src/_core/decorator/index",
+    "@core/enum": "<rootDir>/src/_core/enum/index",
+    "@employee/(.*)": "<rootDir>/src/employee/$1",
+    "@user/(.*)": "<rootDir>/src/user/$1"
+  }
+}

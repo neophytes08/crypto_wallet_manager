@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@core/enum": ["src/_core/enum/index"],
+      "@core/interface": ["src/_core/interface/index"],
+      "@core/decorator": ["src/_core/decorator/index"],
+      "@core/strategy": ["src/_core/strategy/index"],
+      "@core/utils": ["src/_core/utils/index"],
+      // custom collections
+      "@auth/*":["src/auth/*"],
+      "@user/*":["src/user/*"],
+      "@employee/*":["src/employee/*"],
+      "@refresh-token/*":["src/refresh-token/*"],
+      "@device/*":["src/device/*"],
+    }
+  },
+  "include": ["./src/**/*.ts", "./test/**/*.ts"]
+}
