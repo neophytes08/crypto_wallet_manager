@@ -42,6 +42,8 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.1.5",
     "@nestjs/typeorm": "^8.0.2",
+    "axios": "^0.24.0",
+    "axios-retry": "^3.2.4",
     "bcrypt": "^5.0.1",
     "cache-manager": "^3.6.0",
     "class-transformer": "^0.5.1",

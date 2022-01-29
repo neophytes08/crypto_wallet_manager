@@ -17,12 +17,14 @@
       "@core/decorator": ["src/_core/decorator/index"],
       "@core/strategy": ["src/_core/strategy/index"],
       "@core/utils": ["src/_core/utils/index"],
+      "@core/http.service": ["src/_core/http-service/index"],
       // custom collections
       "@auth/*":["src/auth/*"],
       "@user/*":["src/user/*"],
       "@employee/*":["src/employee/*"],
       "@refresh-token/*":["src/refresh-token/*"],
       "@device/*":["src/device/*"],
+      "@crypto-module/*":["src/crypto-module/*"],
     }
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts"]
