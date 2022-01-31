@@ -7,9 +7,9 @@ import { config as ormConfig } from './ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { DeviceModule } from './device/device.module';
-import { HttpServiceModule } from "@core/http.service";
-import { CryptoModuleController } from './crypto-module/crypto-module.controller';
-import { CryptoModuleModule } from './crypto-module/crypto-module.module';
+import { HttpServiceModule } from "./_core/http-service";
+import { CryptoController } from './crypto/crypto.controller';
+import { CryptoModule } from './crypto/crypto.module';
 
 @Module({
   imports: [
@@ -20,9 +20,9 @@ import { CryptoModuleModule } from './crypto-module/crypto-module.module';
     RefreshTokenModule,
     DeviceModule,
     HttpServiceModule,
-    CryptoModuleModule
+    CryptoModule
   ],
-  controllers: [AppController, CryptoModuleController],
+  controllers: [AppController, CryptoController],
   providers: [],
 })
 export class AppModule {}

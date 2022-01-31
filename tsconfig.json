@@ -24,7 +24,7 @@
       "@employee/*":["src/employee/*"],
       "@refresh-token/*":["src/refresh-token/*"],
       "@device/*":["src/device/*"],
-      "@crypto-module/*":["src/crypto-module/*"],
+      "@crypto/*":["src/crypto/*"],
     }
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts"]
