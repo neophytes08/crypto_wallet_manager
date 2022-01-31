@@ -3,7 +3,7 @@ import { HttpStatus } from "@nestjs/common/enums/http-status.enum";
 import { Inject } from "@nestjs/common";
 import Axios, { AxiosInstance, AxiosResponse } from "axios";
 import { IHttpFailedResponseCBSDto } from "./dto/http-failed-response-cbs.dto";
-import { AXIOS_INSTANCE_TOKEN } from "./http.contant";
+import { AXIOS_INSTANCE_TOKEN } from "./http.constant";
 import { THttpModuleOptions } from "./interfaces/http.interface";
 
 @Injectable()
