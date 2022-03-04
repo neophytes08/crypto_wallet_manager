@@ -4,7 +4,7 @@ app = "nomera-dev"
 
 
 [env]
-  PORT=8080
+  PORT = 8080
   ADMIN_EMAIL = "allan.alzula@gmail.com.com"
   ADMIN_MOBILE_NUMBER = "09064317892"
   ADMIN_PASSWORD = "Password@123"
