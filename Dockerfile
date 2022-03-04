@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM node:14-alpine as builder
 
 ENV NODE_ENV build
 
@@ -14,7 +14,7 @@ RUN npm run build \
 
 # ---
 
-FROM node:16-alpine
+FROM node:14-alpine
 
 ENV NODE_ENV production
 
@@ -24,5 +24,7 @@ WORKDIR /home/node
 COPY --from=builder --chown=node:node /home/node/package*.json ./
 COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
 COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
+COPY --from=builder --chown=node:node /home/node/src/ ./src/
 
+#CMD ["npm", "run", "setup", "node", "dist/main.js"]
 CMD ["node", "dist/main.js"]

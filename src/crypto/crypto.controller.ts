@@ -17,6 +17,12 @@ export class CryptoController {
   async getWallet(
     @Query() { address, page } : CryptoQueryDto
   ): Promise<CryptoListDto> {
+    console.log('address', address)
     return await this.cryptoService.getTransactions(address, page);
+  }
+
+  @Get('test')
+  getTest() {
+    return "yeah";
   }
 }
