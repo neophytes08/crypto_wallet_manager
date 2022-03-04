@@ -58,6 +58,7 @@
     "express-useragent": "^1.0.15",
     "fastify-swagger": "^4.13.1",
     "helmet": "^4.6.0",
+    "mysql": "^2.18.1",
     "object-hash": "^2.2.0",
     "pascal-case": "^3.1.2",
     "passport": "^0.5.0",
