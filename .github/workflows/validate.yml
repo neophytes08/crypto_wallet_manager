@@ -31,3 +31,30 @@ jobs:
 
       - name: ▶️ Run build script
         run: npm run build
+  qa:
+    strategy:
+      matrix:
+        node: [12]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ▶️ Run lint script
+        run: npm run lint
+
+      - name: ▶️ Run test script
+        run: npm run test
+
+      - name: ▶️ Run build script
+        run: npm run build
