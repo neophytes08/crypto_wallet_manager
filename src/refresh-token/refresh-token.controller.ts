@@ -5,7 +5,7 @@ import { decrypt, isJwtExpired } from '@core/utils';
 import { EnvType } from '@core/enum';
 import { RefreshTokenService } from './refresh-token.service';
 
-@Controller({ path: "refresh-token", version: "v1" })
+@Controller({ path: 'refresh-token', version: 'v1' })
 export class RefreshTokenController {
   constructor(
     private refreshTokenService: RefreshTokenService,

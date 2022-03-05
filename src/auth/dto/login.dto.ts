@@ -11,20 +11,28 @@ import { DeviceCreateDto } from '@device/dto/device.create.dto';
 import { Type } from 'class-transformer';
 
 export class LoginDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @IsValidUsernameOrEmail()
-  email: string;
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  password?: string;
 
   @IsNotEmpty()
   @IsString()
-  password: string;
+  googleId: string;
 
-  @IsObject()
   @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => DeviceCreateDto)
-  device: DeviceCreateDto;
+  @IsString()
+  name: string;
+
+  // @IsObject()
+  // @IsNotEmpty()
+  // @ValidateNested()
+  // @Type(() => DeviceCreateDto)
+  // device: DeviceCreateDto;
 
   /**
    * Only present when from type is `mobile`
