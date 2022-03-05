@@ -30,7 +30,7 @@ export class initialSetup1637674782586 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE if exists device cascade`);
     await queryRunner.query(`DROP TABLE if exists user_setting cascade`);
     await queryRunner.query(`DROP TABLE if exists employee cascade`);
-    await queryRunner.query(`DROP TABLE if exists user cascade`);
+    await queryRunner.query(`DROP TABLE if exists "user"`);
   }
 
   async createUserTable(queryRunner: QueryRunner) {
@@ -50,30 +50,33 @@ export class initialSetup1637674782586 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'username',
+            name: 'googleId',
             type: 'varchar',
             isUnique: true,
           },
           {
-            name: 'password',
+            name: 'name',
             type: 'varchar',
           },
           {
-            name: 'mobileNumber',
+            name: 'username',
             type: 'varchar',
+            isUnique: true,
+            isNullable: true,
+          },
+          {
+            name: 'password',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'type',
             type: 'varchar',
           },
           {
-            name: 'smsAccessToken',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
             name: 'salt',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'createDate',
@@ -117,43 +120,8 @@ export class initialSetup1637674782586 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'lastName',
+            name: 'name',
             type: 'varchar',
-          },
-          {
-            name: 'firstName',
-            type: 'varchar',
-          },
-          {
-            name: 'middleName',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'nameSuffix',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'dateOfBirth',
-            type: 'varchar',
-          },
-          {
-            name: 'gender',
-            type: 'varchar',
-          },
-          {
-            name: 'presentAddress',
-            type: 'json',
-          },
-          {
-            name: 'permanentAddress',
-            type: 'json',
-          },
-          {
-            name: 'mobileNumber',
-            type: 'varchar',
-            isUnique: true,
           },
           {
             name: 'status',

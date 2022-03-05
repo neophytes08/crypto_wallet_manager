@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CryptoController } from './crypto.controller';
-import { CryptoService } from "./crypto.service";
-import { HttpService } from "../_core/http-service";
-import { AXIOS_INSTANCE_TOKEN } from "../_core/http-service/http.constant";
-import Axios from "axios";
+import { CryptoService } from './crypto.service';
+import { HttpService } from '../_core/http-service';
+import { AXIOS_INSTANCE_TOKEN } from '../_core/http-service/http.constant';
+import Axios from 'axios';
 
 describe('CryptoController', () => {
   let controller: CryptoController;
@@ -18,7 +18,7 @@ describe('CryptoController', () => {
           provide: AXIOS_INSTANCE_TOKEN,
           useValue: Axios,
         },
-      ]
+      ],
     }).compile();
 
     controller = module.get<CryptoController>(CryptoController);
