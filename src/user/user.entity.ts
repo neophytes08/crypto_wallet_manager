@@ -19,28 +19,27 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  email: string;
+  @Column({ unique: true, nullable: true })
+  email?: string;
 
-  @Column({ unique: true })
-  username: string;
+  @Column({ unique: true, nullable: true })
+  username?: string;
+
+  @Column({ nullable: true })
+  @Exclude()
+  password?: string;
 
   @Column()
-  @Exclude()
-  password: string;
+  googleId: string;
 
-  @Column({ unique: true })
-  mobileNumber: string;
+  @Column()
+  name: string;
 
   @Column()
   @Exclude()
   type: UserType;
 
   @Column({ nullable: true })
-  @Exclude()
-  smsAccessToken: string;
-
-  @Column()
   @Exclude()
   salt: string;
 
