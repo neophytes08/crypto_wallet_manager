@@ -7,9 +7,9 @@ import * as helmet from 'helmet';
 import { join } from 'path';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { json, raw } from 'body-parser';
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import * as basicAuth from "express-basic-auth";
-import { EnvType } from "@core/enum";
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as basicAuth from 'express-basic-auth';
+import { EnvType } from '@core/enum';
 
 const initCors = () => {
   const validateOrigin = (origin, next) => {
@@ -31,30 +31,30 @@ const initCors = () => {
 
 const initHelmet = () => {
   return helmet({
-    referrerPolicy: { policy: "no-referrer" },
+    referrerPolicy: { policy: 'no-referrer' },
     contentSecurityPolicy: {
       directives: {
         defaultSrc: [`'self'`],
         styleSrc: [`'self'`, `'unsafe-inline'`],
-        imgSrc: [`'self'`, "data:", "validator.swagger.io"],
+        imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
         scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
       },
     },
   });
 };
 
-const initSwagger = app => {
-  const hideModel = process.env.SWAGGER_HIDE_MODELS === "true" ? true : false;
+const initSwagger = (app) => {
+  const hideModel = process.env.SWAGGER_HIDE_MODELS === 'true' ? true : false;
 
   const options = new DocumentBuilder()
-    .setTitle("Nomera API")
-    .setVersion("1.0.0")
-    .setDescription("Nomera API Documentation")
-    .addBearerAuth({ in: "header", type: "http" })
+    .setTitle('Nomera API')
+    .setVersion('1.0.0')
+    .setDescription('Nomera API Documentation')
+    .addBearerAuth({ in: 'header', type: 'http' })
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup("docs", app, document, {
+  SwaggerModule.setup('docs', app, document, {
     ...(hideModel ? { swaggerOptions: { defaultModelsExpandDepth: -1 } } : {}),
   });
 };
@@ -63,7 +63,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableVersioning({
     type: VersioningType.URI,
-    prefix: "api/",
+    prefix: 'api/',
   });
   app.use(cookieParser(process.env.COOKIE_SECRET));
   app.set('trust proxy', true);
@@ -86,8 +86,8 @@ async function bootstrap() {
     users: { [process.env.SWAGGER_USERNAME]: process.env.SWAGGER_PASSWORD },
   });
 
-  app.use("/docs", docsAuth);
-  app.use("/docs-json", docsAuth);
+  app.use('/docs', docsAuth);
+  app.use('/docs-json', docsAuth);
 
   initSwagger(app);
   await app.listen(process.env.PORT);

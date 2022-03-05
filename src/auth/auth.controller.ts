@@ -17,11 +17,11 @@ import { isEmail } from 'class-validator';
 import { cookieOptions, encrypt } from '@core/utils';
 import { RefreshTokenService } from '@refresh-token/refresh-token.service';
 import { DeviceService } from '@device/device.service';
-import { EnvType, LoginFrom } from '@core/enum';
+import { EnvType, LoginFrom, UserType } from '@core/enum';
 import * as useragent from 'express-useragent';
 import { Response } from 'express';
 
-@Controller({ path: "auth", version: "v1" })
+@Controller({ path: 'auth', version: 'v1' })
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -33,66 +33,49 @@ export class AuthController {
     //
   }
 
-  // @Post('login')
-  // @HttpCode(200)
-  // async login(
-  //   @Headers('user-agent') userAgent: string,
-  //   @Headers('from') from: LoginFrom,
-  //   @Headers('device-id') deviceId: string,
-  //   @Ip() ipAddress: string,
-  //   @Body() data: LoginDto,
-  //   @Res({ passthrough: true }) res: Response,
-  // ): Promise<LoginResDto> {
-  //   const user = await this.userService.findLoginUser(
-  //     data.email,
-  //     isEmail(data.email),
-  //   );
+  @Post('login')
+  @HttpCode(200)
+  async login(
+    @Headers('user-agent') userAgent: string,
+    @Headers('from') from: LoginFrom,
+    @Headers('device-id') deviceId: string,
+    @Ip() ipAddress: string,
+    @Body() data: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<LoginResDto> {
+    const user = await this.userService.loginOrSignUp(data);
 
-  //   if (!user || !user.validatePassword(data.password)) {
-  //     throw new UnauthorizedException('Invalid Credentials');
-  //   }
-  //   const isClient = from === LoginFrom.MOBILE ? true : false;
-  //   const { source } = useragent.parse(userAgent);
+    const refreshJWTToken = this.jwtService.sign(
+      {},
+      {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: '1m',
+      },
+    );
 
-  //   const device = await this.deviceService.getLoginDevice(
-  //     user.id,
-  //     from,
-  //     isClient ? deviceId : source,
-  //   );
+    const encryptedToken = encrypt(refreshJWTToken);
+    const refreshToken = `${encryptedToken.iv}.${encryptedToken.content}`;
 
-  //   const refreshJWTToken = this.jwtService.sign(
-  //     {},
-  //     {
-  //       secret: process.env.REFRESH_TOKEN_SECRET,
-  //       expiresIn: '1m',
-  //     },
-  //   );
+    await this.refTokenService.createRefreshToken(
+      user.id,
+      null,
+      refreshToken,
+      from,
+    );
 
-  //   const encryptedToken = encrypt(refreshJWTToken);
-  //   const refreshToken = `${encryptedToken.iv}.${encryptedToken.content}`;
-
-  //   await this.refTokenService.createRefreshToken(
-  //     user.id,
-  //     device && device.ipAddress === ipAddress ? device.id : null,
-  //     refreshToken,
-  //     from,
-  //   );
-
-  //   res.cookie('hob_datr', refreshToken, cookieOptions);
-  //   return {
-  //     accessToken: this.jwtService.sign({
-  //       id: user.id,
-  //       email: user.email,
-  //       type: user.type,
-  //       env: process.env.NODE_ENV || EnvType.DEV,
-  //     }),
-  //   };
-  // }
+    res.cookie('hob_datr', refreshToken, cookieOptions);
+    return {
+      accessToken: this.jwtService.sign({
+        id: user.id,
+        googleId: data.googleId,
+        env: process.env.NODE_ENV || EnvType.DEV,
+      }),
+    };
+  }
 
   // @Get('password-reset')
   // @HttpCode(200)
   // async passwordReset(): Promise<any> {
   //   return "password-reset"
   // }
-  
 }

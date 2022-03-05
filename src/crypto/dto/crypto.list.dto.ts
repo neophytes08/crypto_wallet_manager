@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { CryptoDataDto } from "./crypto.data.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { CryptoDataDto } from './crypto.data.dto';
 
 export class CryptoListDto {
   @ApiProperty()

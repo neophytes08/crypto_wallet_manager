@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsNumberString, IsString } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumberString, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CryptoQueryDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  address: string
+  address: string;
 
   @ApiProperty()
   @IsNotEmpty()

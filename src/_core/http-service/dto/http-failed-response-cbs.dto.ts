@@ -22,7 +22,7 @@ export interface IConfig {
   retries?: number;
   method?: string;
   url?: string;
-  "axios-retry"?: IAxiosRetry;
+  'axios-retry'?: IAxiosRetry;
 }
 
 export interface IAxiosRetry {
@@ -32,7 +32,7 @@ export interface IAxiosRetry {
 
 export interface IHeaders {
   Accept?: string;
-  "User-Agent"?: string;
+  'User-Agent'?: string;
 }
 
 export interface ITransitional {
