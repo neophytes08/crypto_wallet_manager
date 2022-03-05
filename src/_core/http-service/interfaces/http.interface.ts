@@ -1,5 +1,5 @@
-import { AxiosRequestConfig } from "axios";
-import { IAxiosRetryConfig } from "axios-retry";
+import { AxiosRequestConfig } from 'axios';
+import { IAxiosRetryConfig } from 'axios-retry';
 
 export type THttpModuleOptions = AxiosRequestConfig & IAxiosRetryConfig;
 
