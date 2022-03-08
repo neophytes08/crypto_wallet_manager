@@ -6,12 +6,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserType } from '@core/enum';
 import { classToPlain, Exclude } from 'class-transformer';
 import { Device } from '@device/device.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
+import { RoninWallet } from '@crypto/ronin.wallet.entity';
 
 @Entity('user')
 @Unique(['email', 'username'])
@@ -67,6 +69,9 @@ export class User {
     cascade: ['insert', 'update', 'remove'],
   })
   refreshToken: RefreshToken[];
+
+  @OneToOne(() => RoninWallet, (roninWallet) => roninWallet.user)
+  roninWallet: RoninWallet;
 
   toJSON() {
     return classToPlain(this);

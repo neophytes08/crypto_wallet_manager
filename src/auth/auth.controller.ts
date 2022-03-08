@@ -38,9 +38,9 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   async login(
-    @Headers('user-agent') userAgent: string,
+    // @Headers('user-agent') userAgent: string,
     @Headers('from') from: LoginFrom,
-    @Headers('device-id') deviceId: string,
+    // @Headers('device-id') deviceId: string,
     @Ip() ipAddress: string,
     @Body() data: LoginDto,
     @Res({ passthrough: true }) res: Response,

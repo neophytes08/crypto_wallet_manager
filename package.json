@@ -128,7 +128,8 @@
       "@user/(.*)": "<rootDir>/user/$1",
       "@refresh-token/(.*)": "<rootDir>/refresh-token/$1",
       "@device/(.*)": "<rootDir>/device/$1",
-      "@employee/(.*)": "<rootDir>/employee/$1"
+      "@employee/(.*)": "<rootDir>/employee/$1",
+      "@crypto/(.*)": "<rootDir>/crypto/$1"
     }
   }
 }
