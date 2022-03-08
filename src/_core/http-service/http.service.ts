@@ -26,7 +26,6 @@ export class HttpService {
       })
       .catch((error: IHttpFailedResponseCBSDto) => {
         const err = error;
-        err.origin = 'CBS';
         console.log(err);
         throw new HttpException(
           'Server is busy, please try again later',
