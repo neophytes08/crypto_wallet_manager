@@ -55,7 +55,15 @@ const initSwagger = (app) => {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document, {
-    ...(hideModel ? { swaggerOptions: { defaultModelsExpandDepth: -1 } } : {}),
+    ...(hideModel
+      ? {
+          swaggerOptions: {
+            defaultModelsExpandDepth: -1,
+            tagsSorter: 'alpha',
+            operationsSorter: 'alpha',
+          },
+        }
+      : {}),
   });
 };
 
