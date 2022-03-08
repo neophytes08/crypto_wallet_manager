@@ -28,6 +28,7 @@ processes = []
   SWAGGER_HIDE_MODELS = true
   SWAGGER_PASSWORD = 123456
   SWAGGER_USERNAME = "nomera"
+  COVALENT_API_KEY = "ckey_2508b9b7e4d94553abf83ad5d32:"
   
 [experimental]
   allowed_public_ports = []
