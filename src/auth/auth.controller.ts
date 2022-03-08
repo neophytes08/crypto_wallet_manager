@@ -20,7 +20,9 @@ import { DeviceService } from '@device/device.service';
 import { EnvType, LoginFrom, UserType } from '@core/enum';
 import * as useragent from 'express-useragent';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller({ path: 'auth', version: 'v1' })
 export class AuthController {
   constructor(
@@ -69,6 +71,7 @@ export class AuthController {
         id: user.id,
         googleId: data.googleId,
         env: process.env.NODE_ENV || EnvType.DEV,
+        type: UserType.CLIENT,
       }),
     };
   }

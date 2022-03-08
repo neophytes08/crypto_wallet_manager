@@ -43,5 +43,5 @@ export class LoginDto {
 }
 
 export class LoginResDto {
-  accessToken?: string;
+  accessToken: string;
 }

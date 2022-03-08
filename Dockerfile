@@ -26,5 +26,6 @@ COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
 COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
 COPY --from=builder --chown=node:node /home/node/src/ ./src/
 
-#CMD ["npm", "run", "setup", "node", "dist/main.js"]
+# CMD ["npm", "run", "setup", "&&", "node", "dist/main.js"]
 CMD ["node", "dist/main.js"]
+# CMD ["npm", "run", "setup-fly"]
