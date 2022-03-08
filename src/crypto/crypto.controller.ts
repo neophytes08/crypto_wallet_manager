@@ -20,6 +20,7 @@ import { RoninWalletLists } from './dto/ronin-list.dto';
 import { HttpService } from '../_core/http-service';
 import { getCoinBalance } from '@core/utils';
 import { CryptoBalanceDetails } from './dto/cryptop-balance.dto';
+import * as btoa from 'btoa';
 
 @ApiTags('Crypto')
 @Controller({ path: 'crypto', version: 'v1' })
