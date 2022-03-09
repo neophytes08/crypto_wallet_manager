@@ -40,7 +40,7 @@ export class RefreshTokenService {
 
   async getRefreshToken(refreshToken: string) {
     return await this.refreshTokenRepository.findOne({
-      relations: ['user', 'user.roles'],
+      relations: ['user'],
       where: {
         token: refreshToken,
       },

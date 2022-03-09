@@ -38,6 +38,7 @@
   "dependencies": {
     "@nestjs/common": "^8.2.6",
     "@nestjs/core": "^8.2.6",
+    "@nestjs/event-emitter": "^1.1.0",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.1.0",
     "@nestjs/platform-express": "^8.2.6",
@@ -120,17 +121,21 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "@core/enum": "<rootDir>/_core/enum/index",
+      "@core/swagger": "<rootDir>/_core/swagger/index",
+      "@core/guard": "<rootDir>/_core/guard/index",
+      "@core/event": "<rootDir>/_core/event-listener/index",
       "@core/decorator": "<rootDir>/_core/decorator/index",
       "@core/interface": "<rootDir>/_core/interface/index",
       "@core/strategy": "<rootDir>/_core/strategy/index",
       "@core/utils": "<rootDir>/_core/utils/index",
-      "@core/htttp.service": "<rootDir>_core/http-service/index",
+      "@core/http.service": "<rootDir>/_core/http-service/index",
       "@auth/(.*)": "<rootDir>/auth/$1",
       "@user/(.*)": "<rootDir>/user/$1",
       "@refresh-token/(.*)": "<rootDir>/refresh-token/$1",
       "@device/(.*)": "<rootDir>/device/$1",
       "@employee/(.*)": "<rootDir>/employee/$1",
-      "@crypto/(.*)": "<rootDir>/crypto/$1"
+      "@crypto/(.*)": "<rootDir>/crypto/$1",
+      "@activity/(.*)": "<rootDir>/activity/$1"
     }
   }
 }
