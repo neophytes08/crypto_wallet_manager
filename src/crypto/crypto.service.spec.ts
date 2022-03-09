@@ -1,11 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CryptoService } from './crypto.service';
-import { HttpServiceModule } from '../_core/http-service/http.module';
+import {
+  HttpServiceModule,
+  AXIOS_INSTANCE_TOKEN,
+  HttpService,
+} from '@core/http.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RoninWallet } from './ronin.wallet.entity';
-import { HttpService } from '../_core/http-service';
-import { AXIOS_INSTANCE_TOKEN } from '../_core/http-service/http.constant';
 import Axios from 'axios';
 
 describe('CryptoModuleService', () => {

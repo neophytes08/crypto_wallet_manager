@@ -13,6 +13,9 @@
     "incremental": true,
     "paths": {
       "@core/enum": ["src/_core/enum/index"],
+      "@core/swagger": ["src/_core/swagger/index"],
+      "@core/guard": ["src/_core/guard/index"],
+      "@core/event": ["src/_core/event-listener/index"],
       "@core/interface": ["src/_core/interface/index"],
       "@core/decorator": ["src/_core/decorator/index"],
       "@core/strategy": ["src/_core/strategy/index"],
@@ -25,6 +28,7 @@
       "@refresh-token/*":["src/refresh-token/*"],
       "@device/*":["src/device/*"],
       "@crypto/*":["src/crypto/*"],
+      "@activity/*":["src/activity/*"],
     }
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts"]

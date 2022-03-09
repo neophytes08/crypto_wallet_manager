@@ -14,6 +14,7 @@ import { classToPlain, Exclude } from 'class-transformer';
 import { Device } from '@device/device.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { RoninWallet } from '@crypto/ronin.wallet.entity';
+import { Activity } from '@activity/activity.entity';
 
 @Entity('user')
 @Unique(['email', 'username'])
@@ -72,6 +73,20 @@ export class User {
 
   @OneToOne(() => RoninWallet, (roninWallet) => roninWallet.user)
   roninWallet: RoninWallet;
+
+  @OneToMany(
+    () => Activity,
+    activity => activity.owner,
+    { cascade: ["insert", "update", "remove"] },
+  )
+  owner?: Activity[];
+
+  @OneToMany(
+    () => Activity,
+    activity => activity.editor,
+    { cascade: ["insert", "update", "remove"] },
+  )
+  editor?: Activity[];
 
   toJSON() {
     return classToPlain(this);

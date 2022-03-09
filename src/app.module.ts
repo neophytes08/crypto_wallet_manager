@@ -8,8 +8,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { DeviceModule } from './device/device.module';
 import { HttpServiceModule } from './_core/http-service';
-import { CryptoController } from './crypto/crypto.controller';
 import { CryptoModule } from './crypto/crypto.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ActivityModule } from './activity/activity.module';
+import { EventListenerModule } from "@core/event";
 
 @Module({
   imports: [
@@ -21,8 +23,11 @@ import { CryptoModule } from './crypto/crypto.module';
     DeviceModule,
     HttpServiceModule,
     CryptoModule,
+    EventEmitterModule.forRoot(),
+    ActivityModule,
+    EventListenerModule
   ],
-  controllers: [AppController, CryptoController],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
