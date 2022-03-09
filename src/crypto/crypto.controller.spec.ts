@@ -6,12 +6,14 @@ import Axios from 'axios';
 import { RoninWallet } from './ronin.wallet.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('CryptoController', () => {
   let controller: CryptoController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [EventEmitterModule.forRoot()],
       controllers: [CryptoController],
       providers: [
         CryptoService,

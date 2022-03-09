@@ -1,4 +1,4 @@
-import { ActivityLog } from "./_activity-log.interface";
+import { ActivityLog } from './_activity-log.interface';
 
 export interface LoginSuccess {
   activity: ActivityLog;

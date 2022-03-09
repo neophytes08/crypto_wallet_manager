@@ -11,7 +11,7 @@ import { HttpServiceModule } from './_core/http-service';
 import { CryptoModule } from './crypto/crypto.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ActivityModule } from './activity/activity.module';
-import { EventListenerModule } from "@core/event";
+import { EventListenerModule } from '@core/event';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { EventListenerModule } from "@core/event";
     CryptoModule,
     EventEmitterModule.forRoot(),
     ActivityModule,
-    EventListenerModule
+    EventListenerModule,
   ],
   controllers: [AppController],
   providers: [],

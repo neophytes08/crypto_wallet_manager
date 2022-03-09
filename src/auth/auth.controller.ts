@@ -17,8 +17,8 @@ import { DeviceService } from '@device/device.service';
 import { EnvType, LoginFrom, UserActivity, UserType } from '@core/enum';
 import { Response } from 'express';
 import { ApiHeaders, ApiTags } from '@nestjs/swagger';
-import { loginApiHeader } from "@core/swagger";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { loginApiHeader } from '@core/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: 'v1' })
@@ -42,9 +42,9 @@ export class AuthController {
     @Body() data: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<LoginResDto> {
-    const loginMethod = ["web", "mobile", "cms"].includes(from) ?? false;
+    const loginMethod = ['web', 'mobile', 'cms'].includes(from) ?? false;
 
-    if(!loginMethod) throw new UnauthorizedException("Invalid Login method");
+    if (!loginMethod) throw new UnauthorizedException('Invalid Login method');
     const user = await this.userService.loginOrSignUp(data);
 
     const refreshJWTToken = this.jwtService.sign(
@@ -65,7 +65,7 @@ export class AuthController {
       from,
     );
 
-    this.eventEmitter.emit("login.success", {
+    this.eventEmitter.emit('login.success', {
       activity: {
         owner: user,
         editor: user,

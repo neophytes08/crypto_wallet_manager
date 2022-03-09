@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsISO8601,
   IsNotEmpty,
@@ -8,7 +8,7 @@ import {
   IsString,
   IsOptional,
   ValidateNested,
-} from "class-validator";
+} from 'class-validator';
 
 class DateRange {
   @IsNotEmpty()
@@ -38,12 +38,12 @@ export class ActivityMeQueryDto {
   @ValidateNested()
   @Type(() => DateRange)
   @ApiPropertyOptional({
-    type: "object",
-    properties: { from: { type: "string" }, to: { type: "string" } },
+    type: 'object',
+    properties: { from: { type: 'string' }, to: { type: 'string' } },
     default: {
       dateRange: {
-        from: "2020-01-01",
-        to: "2020-12-12",
+        from: '2020-01-01',
+        to: '2020-12-12',
       },
     },
   })

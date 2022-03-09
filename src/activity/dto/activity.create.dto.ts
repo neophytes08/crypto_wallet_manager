@@ -1,5 +1,5 @@
-import { User } from "@user/user.entity";
-import { IsNotEmpty } from "class-validator";
+import { User } from '@user/user.entity';
+import { IsNotEmpty } from 'class-validator';
 
 export class ActivityCreateDto {
   @IsNotEmpty()
