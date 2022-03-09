@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { EventListenerService } from "./event-listener.service";
+import { Module } from '@nestjs/common';
+import { EventListenerService } from './event-listener.service';
 
 @Module({
   imports: [],

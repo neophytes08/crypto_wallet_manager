@@ -1,16 +1,16 @@
-import { ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
+import { ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
 
 export const loginApiHeader = [
-  { name: "from", description: "", enum: ["web", "mobile", "cms"] },
+  { name: 'from', description: '', enum: ['web', 'mobile', 'cms'] },
 ];
 
 export const fileApiHeader = {
   schema: {
-    type: "object",
+    type: 'object',
     properties: {
       file: {
-        type: "string",
-        format: "binary",
+        type: 'string',
+        format: 'binary',
       },
     },
   },
@@ -22,15 +22,15 @@ export const resetPasswordApiRes: ApiResponseOptions = {
     oneOf: [
       {
         $ref: getSchemaPath(Boolean),
-        description: "Only show if from type is `cms`",
-        type: "boolean",
+        description: 'Only show if from type is `cms`',
+        type: 'boolean',
       },
       {
-        type: "object",
-        description: "Only show if from type is `mobile`",
+        type: 'object',
+        description: 'Only show if from type is `mobile`',
         properties: {
-          otpToken: { type: "string" },
-          mobileNumber: { type: "string" },
+          otpToken: { type: 'string' },
+          mobileNumber: { type: 'string' },
         },
       },
     ],

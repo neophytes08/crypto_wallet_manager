@@ -14,7 +14,7 @@ import { User } from '@user/user.entity';
 import { Employee } from '@employee/employee.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { Device } from '@device/device.entity';
-import { EventEmitterModule } from "@nestjs/event-emitter";
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('AuthController', () => {
   let controller: AuthController;

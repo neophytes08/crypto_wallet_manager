@@ -20,7 +20,7 @@ import { HttpService } from '@core/http.service';
 import { getCoinBalance } from '@core/utils';
 import { CryptoBalanceDetails } from './dto/cryptop-balance.dto';
 import * as btoa from 'btoa';
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserActivity } from '@core/enum';
 
 @ApiTags('Crypto')
@@ -54,11 +54,11 @@ export class CryptoController {
 
     await this.cryptoService.createRoninWallet(wallets);
 
-    this.eventEmitter.emit("ronin-create-wallet.success", {
+    this.eventEmitter.emit('ronin-create-wallet.success', {
       activity: {
         owner: user,
         editor: user,
-        origin: "WEB",
+        origin: 'WEB',
         details: UserActivity.RONIN_CREATED_WALLET,
       },
     });

@@ -74,18 +74,14 @@ export class User {
   @OneToOne(() => RoninWallet, (roninWallet) => roninWallet.user)
   roninWallet: RoninWallet;
 
-  @OneToMany(
-    () => Activity,
-    activity => activity.owner,
-    { cascade: ["insert", "update", "remove"] },
-  )
+  @OneToMany(() => Activity, (activity) => activity.owner, {
+    cascade: ['insert', 'update', 'remove'],
+  })
   owner?: Activity[];
 
-  @OneToMany(
-    () => Activity,
-    activity => activity.editor,
-    { cascade: ["insert", "update", "remove"] },
-  )
+  @OneToMany(() => Activity, (activity) => activity.editor, {
+    cascade: ['insert', 'update', 'remove'],
+  })
   editor?: Activity[];
 
   toJSON() {

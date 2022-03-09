@@ -1,5 +1,5 @@
-import { UserActivity } from "@core/enum";
-import { User } from "@user/user.entity";
+import { UserActivity } from '@core/enum';
+import { User } from '@user/user.entity';
 
 export interface ActivityLog {
   owner: User;

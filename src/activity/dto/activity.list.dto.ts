@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { ActivityDto } from "./activity.dto";
+import { ApiProperty } from '@nestjs/swagger';
+import { ActivityDto } from './activity.dto';
 
 export class ActivityListDto {
   @ApiProperty()
