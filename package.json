@@ -58,7 +58,7 @@
     "express-basic-auth": "^1.2.0",
     "express-rate-limit": "^5.5.1",
     "express-useragent": "^1.0.15",
-    "fastify-swagger": "^4.13.1",
+    "fastify-swagger": "^4.15.0",
     "helmet": "^4.6.0",
     "mysql": "^2.18.1",
     "object-hash": "^2.2.0",
