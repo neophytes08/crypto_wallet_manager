@@ -1,18 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CryptoController } from './crypto.controller';
 import { CryptoService } from './crypto.service';
-import { HttpService } from '../_core/http-service';
-import { AXIOS_INSTANCE_TOKEN } from '../_core/http-service/http.constant';
+import { HttpService, AXIOS_INSTANCE_TOKEN } from '@core/http.service';
 import Axios from 'axios';
 import { RoninWallet } from './ronin.wallet.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('CryptoController', () => {
   let controller: CryptoController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [EventEmitterModule.forRoot()],
       controllers: [CryptoController],
       providers: [
         CryptoService,

@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CryptoService } from './crypto.service';
-import { HttpServiceModule } from '../_core/http-service';
+import { HttpServiceModule } from '@core/http.service';
 import { RoninWallet } from './ronin.wallet.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CryptoController } from './crypto.controller';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     TypeOrmModule.forFeature([RoninWallet]),
   ],
+  controllers: [CryptoController],
   providers: [CryptoService],
   exports: [CryptoService, TypeOrmModule],
 })

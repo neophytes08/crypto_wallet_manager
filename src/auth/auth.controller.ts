@@ -1,10 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
   Headers,
   HttpCode,
-  Ip,
   Post,
   Res,
   UnauthorizedException,
@@ -13,14 +11,14 @@ import { AuthService } from './auth.service';
 import { UserService } from '@user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto, LoginResDto } from './dto/login.dto';
-import { isEmail } from 'class-validator';
 import { cookieOptions, encrypt } from '@core/utils';
 import { RefreshTokenService } from '@refresh-token/refresh-token.service';
 import { DeviceService } from '@device/device.service';
-import { EnvType, LoginFrom, UserType } from '@core/enum';
-import * as useragent from 'express-useragent';
+import { EnvType, LoginFrom, UserActivity, UserType } from '@core/enum';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiHeaders, ApiTags } from '@nestjs/swagger';
+import { loginApiHeader } from '@core/swagger';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: 'v1' })
@@ -31,20 +29,22 @@ export class AuthController {
     private jwtService: JwtService,
     private refTokenService: RefreshTokenService,
     private deviceService: DeviceService,
+    private eventEmitter: EventEmitter2,
   ) {
     //
   }
 
   @Post('login')
   @HttpCode(200)
+  @ApiHeaders(loginApiHeader)
   async login(
-    // @Headers('user-agent') userAgent: string,
     @Headers('from') from: LoginFrom,
-    // @Headers('device-id') deviceId: string,
-    @Ip() ipAddress: string,
     @Body() data: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<LoginResDto> {
+    const loginMethod = ['web', 'mobile', 'cms'].includes(from) ?? false;
+
+    if (!loginMethod) throw new UnauthorizedException('Invalid Login method');
     const user = await this.userService.loginOrSignUp(data);
 
     const refreshJWTToken = this.jwtService.sign(
@@ -65,6 +65,15 @@ export class AuthController {
       from,
     );
 
+    this.eventEmitter.emit('login.success', {
+      activity: {
+        owner: user,
+        editor: user,
+        origin: from.toUpperCase(),
+        details: UserActivity.LOGIN,
+      },
+    });
+
     res.cookie('hob_datr', refreshToken, cookieOptions);
     return {
       accessToken: this.jwtService.sign({
@@ -75,10 +84,4 @@ export class AuthController {
       }),
     };
   }
-
-  // @Get('password-reset')
-  // @HttpCode(200)
-  // async passwordReset(): Promise<any> {
-  //   return "password-reset"
-  // }
 }

@@ -5,7 +5,6 @@ import { HttpService } from '../_core/http-service/http.service';
 import { ApiName } from './enum/ApiName.enum';
 import { CryptoDataDto } from './dto/crypto.data.dto';
 import { RoninWallet } from './ronin.wallet.entity';
-import { RoninCreateDto } from './dto/ronin.create.dto';
 
 @Injectable()
 export class CryptoService {

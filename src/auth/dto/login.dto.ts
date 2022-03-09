@@ -1,14 +1,5 @@
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsValidUsernameOrEmail } from '@core/decorator';
-import { DeviceCreateDto } from '@device/dto/device.create.dto';
-import { Type } from 'class-transformer';
 
 export class LoginDto {
   @IsOptional()
@@ -27,12 +18,6 @@ export class LoginDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
-  // @IsObject()
-  // @IsNotEmpty()
-  // @ValidateNested()
-  // @Type(() => DeviceCreateDto)
-  // device: DeviceCreateDto;
 
   /**
    * Only present when from type is `mobile`
