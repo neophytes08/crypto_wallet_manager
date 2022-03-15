@@ -10,7 +10,10 @@ import {
 import { CryptoService } from './crypto.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { RoninCreateBatchDto } from './dto/ronin.create.dto';
+import {
+  GuestRoninWalletDto,
+  RoninCreateBatchDto,
+} from './dto/ronin.create.dto';
 import { CurrentUser } from '@core/decorator';
 import { CurrUser } from '@core/interface';
 import { RoninWallet } from './ronin.wallet.entity';
@@ -22,6 +25,7 @@ import { CryptoBalanceDetails } from './dto/cryptop-balance.dto';
 import * as btoa from 'btoa';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserActivity } from '@core/enum';
+import { RoninResListsDto } from './dto/ronin.res.dto';
 
 @ApiTags('Crypto')
 @Controller({ path: 'crypto', version: 'v1' })
@@ -92,6 +96,67 @@ export class CryptoController {
     const results = await this.cryptoService.getUserRoninWallet(user.id);
 
     for await (const result of results) {
+      const baseUrl = `https://api.covalenthq.com/v1/2020/address/${result.address}/balances_v2/`;
+      const data = await this.httpService.get(
+        baseUrl,
+        {},
+        { headers: headersRequest },
+      );
+      balanceAxs += getCoinBalance(data.data.data.items, 'AXS');
+      balanceSlp += getCoinBalance(data.data.data.items, 'SLP');
+      balanceEth += getCoinBalance(data.data.data.items, 'WETH');
+    }
+
+    return {
+      balance: {
+        axs: balanceAxs,
+        slp: balanceSlp,
+        eth: balanceEth,
+      },
+    };
+  }
+
+  @Post('guest/ronin/transactions')
+  async getGuestRoninTransactions(
+    @Body() { wallet, page }: RoninCreateBatchDto,
+  ): Promise<RoninResListsDto> {
+    const transactions: any = [];
+    let total = 0;
+
+    for (const data of wallet) {
+      const results = await this.cryptoService.getTransactions(
+        data.address,
+        page,
+      );
+      total += results.count;
+      for (const res of results.data) {
+        transactions.push(res);
+      }
+    }
+
+    transactions.sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+    );
+
+    return {
+      count: total,
+      data: transactions,
+    };
+  }
+
+  @Post('guest/ronin/balance')
+  async getGuestRoninWalletBalance(
+    @Body() { wallet }: GuestRoninWalletDto,
+  ): Promise<CryptoBalanceDetails> {
+    let balanceAxs = 0;
+    let balanceSlp = 0;
+    let balanceEth = 0;
+    const headersRequest = {
+      Authorization: `Basic ${btoa(process.env.COVALENT_API_KEY)}`,
+    };
+
+    for await (const result of wallet) {
       const baseUrl = `https://api.covalenthq.com/v1/2020/address/${result.address}/balances_v2/`;
       const data = await this.httpService.get(
         baseUrl,
