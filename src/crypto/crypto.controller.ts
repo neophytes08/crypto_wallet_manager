@@ -111,4 +111,14 @@ export class CryptoController {
       },
     };
   }
+
+  @Get('coin/lists')
+  async getCoinLists(): Promise<any> {
+    return await this.cryptoService.getCoinLists();
+  }
+
+  @Get('get/coin/lists')
+  async saveCoinLists(): Promise<any> {
+    return await this.cryptoService.getCoinMarkets();
+  }
 }

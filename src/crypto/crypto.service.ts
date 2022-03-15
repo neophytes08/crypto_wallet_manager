@@ -1,21 +1,31 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '../_core/http-service/http.service';
 import { ApiName } from './enum/ApiName.enum';
 import { CryptoDataDto } from './dto/crypto.data.dto';
 import { RoninWallet } from './ronin.wallet.entity';
+import { CoinGecko } from './coin.gecko.entity';
 
 @Injectable()
 export class CryptoService {
   private roninUrl = 'https://explorer.roninchain.com/api/';
+  private coinGeckourl = 'https://api.coingecko.com/api/v3/';
 
   constructor(
     private readonly httpService: HttpService,
     @InjectRepository(RoninWallet)
     private readonly roninWalletRepository: Repository<RoninWallet>,
+    @InjectRepository(CoinGecko)
+    private readonly coinGeckoRepository: Repository<CoinGecko>,
   ) {
     //
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  handleCronResendCbs() {
+    this.saveCoins();
   }
 
   async getTransactions(address: string, page: string) {
@@ -91,5 +101,33 @@ export class CryptoService {
         },
       })
       .getMany();
+  }
+
+  async getCoinLists(): Promise<{ count: number; data: CoinGecko[] }> {
+    const [data, count] = await this.coinGeckoRepository
+      .createQueryBuilder('coin_list')
+      .getManyAndCount();
+
+    return {
+      count,
+      data,
+    };
+  }
+
+  async saveCoins() {
+    console.log('----- REMOVE AND CREATE NEW COIN GECKO RECORDS -----')
+    // truncate all records
+    this.coinGeckoRepository.clear()
+
+    // insert new record
+    const url = `${this.coinGeckourl}${ApiName.COIN_LISTS}`;
+    const results = await this.httpService.get(url);
+    return this.coinGeckoRepository.save(results.data);
+  }
+
+  async getCoinMarkets() {
+    const url = `${this.coinGeckourl}${ApiName.COIN_MARKETS}?vs_currency=usd&order=market_cap_desc&per_page=250`;
+    const results = await this.httpService.get(url);
+    return results.data;
   }
 }

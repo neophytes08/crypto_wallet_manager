@@ -12,6 +12,7 @@ import { CryptoModule } from './crypto/crypto.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ActivityModule } from './activity/activity.module';
 import { EventListenerModule } from '@core/event';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EventListenerModule } from '@core/event';
     HttpServiceModule,
     CryptoModule,
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     ActivityModule,
     EventListenerModule,
   ],
