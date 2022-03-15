@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class RoninCreateDto {
   @IsNotEmpty()
@@ -12,6 +19,17 @@ export class RoninCreateDto {
 }
 
 export class RoninCreateBatchDto {
+  @IsOptional()
+  @IsNumber()
+  page: number;
+
+  @IsArray()
+  @ValidateNested()
+  @Type(() => RoninCreateDto)
+  wallet: RoninCreateDto[];
+}
+
+export class GuestRoninWalletDto {
   @IsArray()
   @ValidateNested()
   @Type(() => RoninCreateDto)
