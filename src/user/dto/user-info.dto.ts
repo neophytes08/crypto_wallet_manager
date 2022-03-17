@@ -10,4 +10,12 @@ export class UserInfoDto {
   createDate: Date;
 
   updateDate: Date;
+
+  settings?: Option;
+}
+
+class Option {
+  isBiometricEnabled: boolean;
+  isDarkModeEnabled: boolean;
+  defaultCurrency: string;
 }
