@@ -11,6 +11,7 @@ import { RefreshTokenService } from '@refresh-token/refresh-token.service';
 import { DeviceService } from '@device/device.service';
 
 import { User } from '@user/user.entity';
+import { UserSetting } from '@user/user-setting.entity';
 import { Employee } from '@employee/employee.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { Device } from '@device/device.entity';
@@ -39,6 +40,10 @@ describe('AuthController', () => {
         DeviceService,
         {
           provide: getRepositoryToken(User),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(UserSetting),
           useClass: Repository,
         },
         {
