@@ -85,10 +85,10 @@ export class User {
   })
   editor?: Activity[];
 
-  @OneToMany(() => UserSetting, (userSetting) => userSetting.user, {
+  @OneToOne(() => UserSetting, (userSetting) => userSetting.user, {
     cascade: ['insert', 'update', 'remove'],
   })
-  setting: UserSetting[];
+  setting: UserSetting;
 
   toJSON() {
     return classToPlain(this);
