@@ -15,6 +15,7 @@ import { Device } from '@device/device.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { RoninWallet } from '@crypto/ronin.wallet.entity';
 import { Activity } from '@activity/activity.entity';
+import { UserSetting } from './user-setting.entity';
 
 @Entity('user')
 @Unique(['email', 'username'])
@@ -83,6 +84,11 @@ export class User {
     cascade: ['insert', 'update', 'remove'],
   })
   editor?: Activity[];
+
+  @OneToMany(() => UserSetting, (userSetting) => userSetting.user, {
+    cascade: ['insert', 'update', 'remove'],
+  })
+  setting: UserSetting[];
 
   toJSON() {
     return classToPlain(this);
