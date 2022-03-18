@@ -16,6 +16,7 @@ import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { RoninWallet } from '@crypto/ronin.wallet.entity';
 import { Activity } from '@activity/activity.entity';
 import { UserSetting } from './user-setting.entity';
+import { Employee } from '@employee/employee.entity';
 
 @Entity('user')
 @Unique(['email', 'username'])
@@ -89,6 +90,9 @@ export class User {
     cascade: ['insert', 'update', 'remove'],
   })
   setting: UserSetting;
+
+  @OneToOne(() => Employee, (employeeUser) => employeeUser.user)
+  employeeUser: Employee;
 
   toJSON() {
     return classToPlain(this);
