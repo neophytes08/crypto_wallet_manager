@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '../_core/http-service/http.service';
 import { ApiName } from './enum/ApiName.enum';
 import { RoninWallet } from './ronin.wallet.entity';
+import { RoninCreateDto } from './dto/ronin.create.dto';
 
 @Injectable()
 export class CryptoService {
@@ -84,5 +85,22 @@ export class CryptoService {
         },
       })
       .getMany();
+  }
+
+  async getRoninWalletDetails(id: number) {
+    return await this.roninWalletRepository
+      .createQueryBuilder('ronin_wallet')
+      .where({
+        id,
+      })
+      .getOne();
+  }
+
+  async updateRoninWallet(data: RoninCreateDto, id: number) {
+    return await this.roninWalletRepository.update(id, data);
+  }
+
+  async deleteRoninWallet(id: number) {
+    return await this.roninWalletRepository.delete(id);
   }
 }
