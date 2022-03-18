@@ -1,8 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
+  NotFoundException,
+  Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -13,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import {
   GuestRoninWalletDto,
   RoninCreateBatchDto,
+  RoninCreateDto,
 } from './dto/ronin.create.dto';
 import { CurrentUser } from '@core/decorator';
 import { CurrUser } from '@core/interface';
@@ -26,6 +31,7 @@ import * as btoa from 'btoa';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserActivity } from '@core/enum';
 import { RoninResListsDto } from './dto/ronin.res.dto';
+import { RoninParamDto } from './dto/ronin.param.dto';
 
 @ApiTags('Crypto')
 @Controller({ path: 'crypto', version: 'v1' })
@@ -114,6 +120,61 @@ export class CryptoController {
         eth: balanceEth,
       },
     };
+  }
+
+  @Patch('wallet/:id/ronin')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  async updateRoninWallet(
+    @CurrentUser() user: CurrUser,
+    @Param() { id }: RoninParamDto,
+    @Body() data: RoninCreateDto,
+  ): Promise<HttpStatus> {
+    const check = await this.cryptoService.getRoninWalletDetails(id);
+
+    if (!check) {
+      throw new NotFoundException('Ronin Wallet');
+    }
+
+    await this.cryptoService.updateRoninWallet(data, id);
+
+    this.eventEmitter.emit('ronin-create-wallet.success', {
+      activity: {
+        owner: user,
+        editor: user,
+        origin: 'WEB',
+        details: UserActivity.RONIN_UPDATED_WALLET,
+      },
+    });
+
+    return HttpStatus.OK;
+  }
+
+  @Delete('wallet/:id/ronin')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  async deleteRoninWallet(
+    @CurrentUser() user: CurrUser,
+    @Param() { id }: RoninParamDto,
+  ): Promise<HttpStatus> {
+    const check = await this.cryptoService.getRoninWalletDetails(id);
+
+    if (!check) {
+      throw new NotFoundException('Ronin Wallet');
+    }
+
+    await this.cryptoService.deleteRoninWallet(id);
+
+    this.eventEmitter.emit('ronin-create-wallet.success', {
+      activity: {
+        owner: user,
+        editor: user,
+        origin: 'WEB',
+        details: UserActivity.RONIN_DELETE_WALLET,
+      },
+    });
+
+    return HttpStatus.OK;
   }
 
   @Post('guest/ronin/transactions')
