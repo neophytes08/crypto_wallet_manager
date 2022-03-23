@@ -1,12 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cron, CronExpression } from "@nestjs/schedule";
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '../_core/http-service/http.service';
 import { ApiName } from './enum/ApiName.enum';
-import { CryptoDataDto } from './dto/crypto.data.dto';
 import { RoninWallet } from './ronin.wallet.entity';
 import { CoinGecko } from './coin.gecko.entity';
+import { RoninCreateDto } from './dto/ronin.create.dto';
 
 @Injectable()
 export class CryptoService {
@@ -28,21 +28,15 @@ export class CryptoService {
     this.saveCoins();
   }
 
-  async getTransactions(address: string, page: string) {
-    const format: CryptoDataDto[] = [];
+  async getTransactions(address: string, page: number) {
+    const format: any = [];
     const url = `${this.roninUrl}${ApiName.TRANSACTIONS}?addr=${address}&from=${page}&size=10`;
     const result = await this.httpService.get(url);
 
     for await (const data of result.data.results) {
-      format.push({
-        amount: data.value,
-        from: data.from,
-        to: data.to,
-        tokenName: data.token_name,
-        symbol: data.token_symbol,
-        time: data.timestamp,
-      });
+      format.push(data);
     }
+
     return {
       count: result.data.total,
       data: format,
@@ -117,17 +111,51 @@ export class CryptoService {
   async saveCoins() {
     console.log('----- REMOVE AND CREATE NEW COIN GECKO RECORDS -----')
     // truncate all records
-    this.coinGeckoRepository.clear()
+    this.coinGeckoRepository.clear();
+    let formatData: any = [];
 
     // insert new record
-    const url = `${this.coinGeckourl}${ApiName.COIN_LISTS}`;
-    const results = await this.httpService.get(url);
-    return this.coinGeckoRepository.save(results.data);
-  }
-
-  async getCoinMarkets() {
     const url = `${this.coinGeckourl}${ApiName.COIN_MARKETS}?vs_currency=usd&order=market_cap_desc&per_page=250`;
     const results = await this.httpService.get(url);
-    return results.data;
+
+    for(const result of results.data) {
+      const { id, name, symbol } = result;
+
+      formatData.push(Object.assign(new CoinGecko, {
+        id: id,
+        name: name,
+        symbol: symbol,
+        details: {
+          ...result
+        }
+      }));
+    }
+
+    return this.coinGeckoRepository.save(formatData);
+  }
+
+  async getCoinMarkets(ids: any) {
+    return await this.coinGeckoRepository.find({
+      where: {
+        id: In(ids.ids)
+      }
+    })
+  }
+  
+  async getRoninWalletDetails(id: number) {
+    return await this.roninWalletRepository
+      .createQueryBuilder('ronin_wallet')
+      .where({
+        id,
+      })
+      .getOne();
+  }
+
+  async updateRoninWallet(data: RoninCreateDto, id: number) {
+    return await this.roninWalletRepository.update(id, data);
+  }
+
+  async deleteRoninWallet(id: number) {
+    return await this.roninWalletRepository.delete(id);
   }
 }

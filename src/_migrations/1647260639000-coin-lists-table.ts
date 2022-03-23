@@ -11,7 +11,6 @@ export class coinListsTable1647260639000 implements MigrationInterface {
                   name: 'id',
                   type: 'varchar',
                   isPrimary: true,
-                  isNullable: true
                 },
                 {
                     name: 'name',
@@ -20,7 +19,10 @@ export class coinListsTable1647260639000 implements MigrationInterface {
                 {
                     name: 'symbol',
                     type: 'varchar',
-                    isNullable: true
+                },
+                {
+                    name: 'details',
+                    type: 'json',
                 },
                 {
                   name: 'createDate',
