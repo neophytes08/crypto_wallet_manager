@@ -4,7 +4,10 @@ import {
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
+  JoinColumn,
+  OneToOne,
 } from 'typeorm';
+import { UserCoin } from '@user/user.coin.entity';
 
 export class CoinDetails {
   @Column()
@@ -87,7 +90,7 @@ export class CoinGecko {
   @Column()
   symbol: string;
 
-  @Column({ type: "json" })
+  @Column({ type: 'json' })
   details: any;
 
   @CreateDateColumn()
@@ -95,4 +98,14 @@ export class CoinGecko {
 
   @UpdateDateColumn()
   updateDate: Date;
+
+  /*
+   * Relationships
+   */
+
+  @OneToOne(() => UserCoin, {
+    cascade: ['insert'],
+  })
+  @JoinColumn({ name: 'id' })
+  coin: UserCoin;
 }

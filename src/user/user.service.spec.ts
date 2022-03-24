@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { UserSetting } from './user-setting.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { UserCoin } from './user.coin.entity';
 
 describe('UserService', () => {
   let service: UserService;
@@ -18,6 +19,10 @@ describe('UserService', () => {
         },
         {
           provide: getRepositoryToken(UserSetting),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(UserCoin),
           useClass: Repository,
         },
       ],

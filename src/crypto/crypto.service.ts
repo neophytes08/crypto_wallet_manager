@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cron, CronExpression } from "@nestjs/schedule";
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { In, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '../_core/http-service/http.service';
@@ -23,7 +23,7 @@ export class CryptoService {
     //
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_2_HOURS)
   handleCronResendCbs() {
     this.saveCoins();
   }
@@ -102,6 +102,10 @@ export class CryptoService {
       .createQueryBuilder('coin_list')
       .getManyAndCount();
 
+    if (count === 0) {
+      this.saveCoins();
+    }
+
     return {
       count,
       data,
@@ -109,26 +113,28 @@ export class CryptoService {
   }
 
   async saveCoins() {
-    console.log('----- REMOVE AND CREATE NEW COIN GECKO RECORDS -----')
+    console.log('----- REMOVE AND CREATE NEW COIN GECKO RECORDS -----');
     // truncate all records
     this.coinGeckoRepository.clear();
-    let formatData: any = [];
+    const formatData: any = [];
 
     // insert new record
     const url = `${this.coinGeckourl}${ApiName.COIN_MARKETS}?vs_currency=usd&order=market_cap_desc&per_page=250`;
     const results = await this.httpService.get(url);
 
-    for(const result of results.data) {
+    for (const result of results.data) {
       const { id, name, symbol } = result;
 
-      formatData.push(Object.assign(new CoinGecko, {
-        id: id,
-        name: name,
-        symbol: symbol,
-        details: {
-          ...result
-        }
-      }));
+      formatData.push(
+        Object.assign(new CoinGecko(), {
+          id: id,
+          name: name,
+          symbol: symbol,
+          details: {
+            ...result,
+          },
+        }),
+      );
     }
 
     return this.coinGeckoRepository.save(formatData);
@@ -137,11 +143,11 @@ export class CryptoService {
   async getCoinMarkets(ids: any) {
     return await this.coinGeckoRepository.find({
       where: {
-        id: In(ids.ids)
-      }
-    })
+        id: In(ids.ids),
+      },
+    });
   }
-  
+
   async getRoninWalletDetails(id: number) {
     return await this.roninWalletRepository
       .createQueryBuilder('ronin_wallet')

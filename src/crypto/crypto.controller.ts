@@ -129,9 +129,7 @@ export class CryptoController {
   }
 
   @Get('coins')
-  async getCoins(
-    @Query() ids : string[]
-  ): Promise<any> {
+  async getCoins(@Query() ids: string[]): Promise<any> {
     return await this.cryptoService.getCoinMarkets(ids);
   }
 

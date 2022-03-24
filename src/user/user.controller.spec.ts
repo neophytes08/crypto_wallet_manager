@@ -5,12 +5,15 @@ import { User } from './user.entity';
 import { UserSetting } from './user-setting.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { UserCoin } from './user.coin.entity';
 
 describe('UserController', () => {
   let controller: UserController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [EventEmitterModule.forRoot()],
       controllers: [UserController],
       providers: [
         UserService,
@@ -20,6 +23,10 @@ describe('UserController', () => {
         },
         {
           provide: getRepositoryToken(UserSetting),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(UserCoin),
           useClass: Repository,
         },
       ],

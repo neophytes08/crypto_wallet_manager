@@ -6,6 +6,10 @@ import { CoinGecko } from './coin.gecko.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CryptoController } from './crypto.controller';
 
+/*
+ * Modules
+ */
+
 @Module({
   imports: [
     HttpServiceModule.register({

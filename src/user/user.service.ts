@@ -9,6 +9,8 @@ import { UserSetting } from './user-setting.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserType } from '@core/enum';
+import { UserCoin } from './user.coin.entity';
+import { UserCoinData } from './dto/coin.dto';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(UserSetting)
     private readonly userSettingRepository: Repository<UserSetting>,
+    @InjectRepository(UserCoin)
+    private readonly userCoinRepository: Repository<UserCoin>,
   ) {
     //
   }
@@ -49,7 +53,6 @@ export class UserService {
       await this.userSettingRepository.save(settings);
       return userData;
     } catch (err) {
-      console.log(err);
       if (err.code === '23505') {
         throw new ConflictException('email already exists');
       } else {
@@ -103,5 +106,43 @@ export class UserService {
         options,
       },
     );
+  }
+
+  async createUserCoin(payload: UserCoin) {
+    const result = await this.userCoinRepository.findOne({
+      where: {
+        user_id: payload.user_id,
+        coin_id: payload.coin_id,
+      },
+    });
+
+    return !result ? await this.userCoinRepository.save(payload) : false;
+  }
+
+  async getCoinsByUserId(
+    user_id: number,
+  ): Promise<{ count: number; data: UserCoinData[] }> {
+    const results = await this.userCoinRepository.find({
+      relations: ['coin'],
+      where: {
+        user_id,
+      },
+    });
+
+    return {
+      count: results.length,
+      data: results,
+    };
+  }
+
+  async deleteUserCoin(id: string, user_id: number) {
+    const check = await this.userCoinRepository.findOne({
+      where: {
+        user_id: user_id,
+        id: id,
+      },
+    });
+
+    return check ? await this.userCoinRepository.delete(id) : false;
   }
 }
