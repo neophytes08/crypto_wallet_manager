@@ -1,21 +1,31 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { In, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '../_core/http-service/http.service';
 import { ApiName } from './enum/ApiName.enum';
 import { RoninWallet } from './ronin.wallet.entity';
+import { CoinGecko } from './coin.gecko.entity';
 import { RoninCreateDto } from './dto/ronin.create.dto';
 
 @Injectable()
 export class CryptoService {
   private roninUrl = 'https://explorer.roninchain.com/api/';
+  private coinGeckourl = 'https://api.coingecko.com/api/v3/';
 
   constructor(
     private readonly httpService: HttpService,
     @InjectRepository(RoninWallet)
     private readonly roninWalletRepository: Repository<RoninWallet>,
+    @InjectRepository(CoinGecko)
+    private readonly coinGeckoRepository: Repository<CoinGecko>,
   ) {
     //
+  }
+
+  @Cron(CronExpression.EVERY_2_HOURS)
+  handleCronResendCbs() {
+    this.saveCoins();
   }
 
   async getTransactions(address: string, page: number) {
@@ -85,6 +95,57 @@ export class CryptoService {
         },
       })
       .getMany();
+  }
+
+  async getCoinLists(): Promise<{ count: number; data: CoinGecko[] }> {
+    const [data, count] = await this.coinGeckoRepository
+      .createQueryBuilder('coin_list')
+      .getManyAndCount();
+
+    if (count === 0) {
+      this.saveCoins();
+    }
+
+    return {
+      count,
+      data,
+    };
+  }
+
+  async saveCoins() {
+    console.log('----- REMOVE AND CREATE NEW COIN GECKO RECORDS -----');
+    // truncate all records
+    this.coinGeckoRepository.clear();
+    const formatData: any = [];
+
+    // insert new record
+    const url = `${this.coinGeckourl}${ApiName.COIN_MARKETS}?vs_currency=usd&order=market_cap_desc&per_page=250`;
+    const results = await this.httpService.get(url);
+
+    for (const result of results.data) {
+      const { id, name, symbol } = result;
+
+      formatData.push(
+        Object.assign(new CoinGecko(), {
+          id: id,
+          name: name,
+          symbol: symbol,
+          details: {
+            ...result,
+          },
+        }),
+      );
+    }
+
+    return this.coinGeckoRepository.save(formatData);
+  }
+
+  async getCoinMarkets(ids: any) {
+    return await this.coinGeckoRepository.find({
+      where: {
+        id: In(ids.ids),
+      },
+    });
   }
 
   async getRoninWalletDetails(id: number) {

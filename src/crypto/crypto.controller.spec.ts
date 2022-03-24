@@ -7,6 +7,7 @@ import { RoninWallet } from './ronin.wallet.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CoinGecko } from './coin.gecko.entity';
 
 describe('CryptoController', () => {
   let controller: CryptoController;
@@ -24,6 +25,10 @@ describe('CryptoController', () => {
         },
         {
           provide: getRepositoryToken(RoninWallet),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(CoinGecko),
           useClass: Repository,
         },
       ],

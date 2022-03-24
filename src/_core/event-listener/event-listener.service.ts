@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { ActivityService } from '@activity/activity.service';
-import { LoginSuccess, RoninCreateWalletSuccess } from './interface';
+import {
+  LoginSuccess,
+  RoninCreateWalletSuccess,
+  UserCoinCreateSuccess,
+} from './interface';
 
 @Injectable()
 export class EventListenerService {
@@ -24,6 +28,19 @@ export class EventListenerService {
   async onRoninCreateWalletSuccessLogActivity(
     payload: RoninCreateWalletSuccess,
   ) {
+    await this.activityService.createActivity(payload.activity);
+  }
+
+  /**
+   * User Coin
+   */
+  @OnEvent('user-coin-create.success')
+  async onUserCoinCreateSuccessLogActivity(payload: UserCoinCreateSuccess) {
+    await this.activityService.createActivity(payload.activity);
+  }
+
+  @OnEvent('user-coin-delete.success')
+  async onUserCoinDeleteSuccessLogActivity(payload: UserCoinCreateSuccess) {
     await this.activityService.createActivity(payload.activity);
   }
 }

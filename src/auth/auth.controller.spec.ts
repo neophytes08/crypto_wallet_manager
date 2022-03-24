@@ -16,6 +16,7 @@ import { Employee } from '@employee/employee.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
 import { Device } from '@device/device.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { UserCoin } from '@user/user.coin.entity';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -56,6 +57,10 @@ describe('AuthController', () => {
         },
         {
           provide: getRepositoryToken(Device),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(UserCoin),
           useClass: Repository,
         },
       ],

@@ -123,6 +123,16 @@ export class CryptoController {
     };
   }
 
+  @Get('coin/lists')
+  async getCoinLists(): Promise<any> {
+    return await this.cryptoService.getCoinLists();
+  }
+
+  @Get('coins')
+  async getCoins(@Query() ids: string[]): Promise<any> {
+    return await this.cryptoService.getCoinMarkets(ids);
+  }
+
   @Patch('wallet/:id/ronin')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
