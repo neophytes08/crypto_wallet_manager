@@ -23,7 +23,7 @@ export class CryptoService {
     //
   }
 
-  @Cron(CronExpression.EVERY_2_HOURS)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleCronResendCbs() {
     this.saveCoins();
   }
