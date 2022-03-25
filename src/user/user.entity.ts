@@ -37,8 +37,8 @@ export class User {
   @Column()
   googleId: string;
 
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  name?: string;
 
   @Column()
   @Exclude()

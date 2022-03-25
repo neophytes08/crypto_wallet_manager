@@ -15,9 +15,9 @@ export class LoginDto {
   @IsString()
   googleId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 
   /**
    * Only present when from type is `mobile`
