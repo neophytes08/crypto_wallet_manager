@@ -1,7 +1,7 @@
 export class UserInfoDto {
   id: number;
 
-  name: string;
+  name?: string;
 
   googleId: string;
 
