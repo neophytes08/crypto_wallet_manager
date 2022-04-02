@@ -23,10 +23,10 @@ export class CryptoService {
     //
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
-  handleCronResendCbs() {
-    this.saveCoins();
-  }
+  // @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  // handleCronResendCbs() {
+  //   this.saveCoins();
+  // }
 
   async getTransactions(address: string, page: number) {
     const format: any = [];
