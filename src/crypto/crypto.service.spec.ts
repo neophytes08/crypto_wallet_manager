@@ -7,7 +7,7 @@ import {
 } from '@core/http.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RoninWallet } from './ronin.wallet.entity';
+import { Wallet } from './wallet.entity';
 import Axios from 'axios';
 import { CoinGecko } from './coin.gecko.entity';
 
@@ -25,7 +25,7 @@ describe('CryptoModuleService', () => {
           useValue: Axios,
         },
         {
-          provide: getRepositoryToken(RoninWallet),
+          provide: getRepositoryToken(Wallet),
           useClass: Repository,
         },
         {

@@ -3,4 +3,5 @@ export enum ApiName {
   COIN_LISTS = 'coins/list',
   COIN_PING = 'ping',
   COIN_MARKETS = 'coins/markets',
+  SAVE_TRANSACTIONS = 'transaction',
 }

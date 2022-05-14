@@ -1,6 +1,8 @@
+import { WalletType } from '@core/enum';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsIn,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -16,6 +18,11 @@ export class RoninCreateDto {
   @IsNotEmpty()
   @IsString()
   address: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsIn(['ronin', 'metamask', 'binance'])
+  type: WalletType;
 }
 
 export class RoninCreateBatchDto {

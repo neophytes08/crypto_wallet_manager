@@ -12,13 +12,13 @@ export class createRoninWalletTable1646730710737 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE if exists ronin_wallet cascade`);
+    await queryRunner.query(`DROP TABLE if exists wallet cascade`);
   }
 
   async createTable(queryRunner: QueryRunner) {
     await queryRunner.createTable(
       new Table({
-        name: 'ronin_wallet',
+        name: 'wallet',
         columns: [
           {
             name: 'id',
@@ -39,6 +39,10 @@ export class createRoninWalletTable1646730710737 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'type',
+            type: 'varchar',
+          },
+          {
             name: 'createDate',
             type: 'timestamptz',
             default: 'now()',
@@ -56,7 +60,7 @@ export class createRoninWalletTable1646730710737 implements MigrationInterface {
 
   async createRoninWalletFK(queryRunner: QueryRunner) {
     await queryRunner.createForeignKey(
-      'ronin_wallet',
+      'wallet',
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],

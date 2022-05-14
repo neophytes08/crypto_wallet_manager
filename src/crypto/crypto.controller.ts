@@ -18,10 +18,10 @@ import {
   GuestRoninWalletDto,
   RoninCreateBatchDto,
   RoninCreateDto,
-} from './dto/ronin.create.dto';
+} from './dto/wallet.create.dto';
 import { CurrentUser } from '@core/decorator';
 import { CurrUser } from '@core/interface';
-import { RoninWallet } from './ronin.wallet.entity';
+import { Wallet } from './wallet.entity';
 import { RoninQueryDto } from './dto/ronin.query.dto';
 import { RoninWalletLists } from './dto/ronin-list.dto';
 import { HttpService } from '@core/http.service';
@@ -45,39 +45,40 @@ export class CryptoController {
     //
   }
 
-  @Post('wallet/ronin')
+  @Post('wallet')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async createRoninWallet(
     @CurrentUser() user: CurrUser,
     @Body() { wallet }: RoninCreateBatchDto,
   ): Promise<HttpStatus> {
-    const wallets: RoninWallet[] = [];
+    const wallets: Wallet[] = [];
 
     for await (const data of wallet) {
-      const ronin = Object.assign(new RoninWallet(), {
+      const wallet = Object.assign(new Wallet(), {
         user: user,
         name: data.name,
         address: data.address,
+        type: data.type,
       });
-      wallets.push(ronin);
+      wallets.push(wallet);
     }
 
-    await this.cryptoService.createRoninWallet(wallets);
+    await this.cryptoService.createWallet(wallets);
 
     this.eventEmitter.emit('ronin-create-wallet.success', {
       activity: {
         owner: user,
         editor: user,
         origin: 'WEB',
-        details: UserActivity.RONIN_CREATED_WALLET,
+        details: UserActivity.CREATED_WALLET,
       },
     });
 
     return HttpStatus.CREATED;
   }
 
-  @Get('wallet/ronin')
+  @Get('wallet')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   async getRoninWallet(
@@ -85,7 +86,7 @@ export class CryptoController {
     @Query() { page, limit }: RoninQueryDto,
   ): Promise<RoninWalletLists> {
     const offset = page * limit;
-    return await this.cryptoService.getRoninWallet(offset, limit, user.id);
+    return await this.cryptoService.getWallet(offset, limit, user.id);
   }
 
   @Get('wallet/ronin/balance')
