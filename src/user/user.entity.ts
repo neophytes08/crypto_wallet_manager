@@ -13,7 +13,7 @@ import { UserType } from '@core/enum';
 import { classToPlain, Exclude } from 'class-transformer';
 import { Device } from '@device/device.entity';
 import { RefreshToken } from '@refresh-token/refresh-token.entity';
-import { RoninWallet } from '@crypto/ronin.wallet.entity';
+import { Wallet } from '@crypto/wallet.entity';
 import { Activity } from '@activity/activity.entity';
 import { UserSetting } from './user-setting.entity';
 import { Employee } from '@employee/employee.entity';
@@ -73,8 +73,8 @@ export class User {
   })
   refreshToken: RefreshToken[];
 
-  @OneToOne(() => RoninWallet, (roninWallet) => roninWallet.user)
-  roninWallet: RoninWallet;
+  @OneToOne(() => Wallet, (wallet) => wallet.user)
+  wallet: Wallet;
 
   @OneToMany(() => Activity, (activity) => activity.owner, {
     cascade: ['insert', 'update', 'remove'],

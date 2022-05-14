@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CryptoService } from './crypto.service';
 import { HttpServiceModule } from '@core/http.service';
-import { RoninWallet } from './ronin.wallet.entity';
+import { Wallet } from './wallet.entity';
 import { CoinGecko } from './coin.gecko.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CryptoController } from './crypto.controller';
@@ -17,7 +17,7 @@ import { CryptoController } from './crypto.controller';
       maxRedirects: 5,
       retries: 5,
     }),
-    TypeOrmModule.forFeature([RoninWallet, CoinGecko]),
+    TypeOrmModule.forFeature([Wallet, CoinGecko]),
   ],
   controllers: [CryptoController],
   providers: [CryptoService],

@@ -8,9 +8,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@user/user.entity';
+import { WalletType } from '@core/enum';
 
-@Entity('ronin_wallet')
-export class RoninWallet {
+@Entity('wallet')
+export class Wallet {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,6 +20,9 @@ export class RoninWallet {
 
   @Column()
   address: string;
+
+  @Column()
+  type: WalletType;
 
   @CreateDateColumn()
   createDate: Date;
