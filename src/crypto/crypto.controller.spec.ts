@@ -3,7 +3,7 @@ import { CryptoController } from './crypto.controller';
 import { CryptoService } from './crypto.service';
 import { HttpService, AXIOS_INSTANCE_TOKEN } from '@core/http.service';
 import Axios from 'axios';
-import { RoninWallet } from './ronin.wallet.entity';
+import { Wallet } from './wallet.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -24,7 +24,7 @@ describe('CryptoController', () => {
           useValue: Axios,
         },
         {
-          provide: getRepositoryToken(RoninWallet),
+          provide: getRepositoryToken(Wallet),
           useClass: Repository,
         },
         {
